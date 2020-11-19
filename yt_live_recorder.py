@@ -34,7 +34,7 @@ if __name__ == "__main__":
         os.makedirs(download_dir)
     
     while True:
-        video_id = 'YEOuqKT-svE'
+        video_id = 'uxXJ7j86mIM'
             
         video_url = "https://www.youtube.com/watch?v="+video_id
         
@@ -52,3 +52,8 @@ if __name__ == "__main__":
         # Invoke streamlink process to download the live video
         proc = subprocess.Popen(["streamlink", "-o", os.path.join(download_dir, output_fname), video_url, quality])
         exit_code = proc.wait()
+        print(exit_code)
+        if exit_code != 0:
+            logging.info("Video is not live %s. Will wait for 5 minutes and retry.", video_url)
+            time.sleep(300)
+            
