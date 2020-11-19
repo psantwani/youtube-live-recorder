@@ -5,6 +5,7 @@ import os.path
 import requests
 import time
 import helpers
+from datetime import date, datetime
 
 if __name__ == "__main__":
     
@@ -33,10 +34,26 @@ if __name__ == "__main__":
     if not os.path.exists(download_dir):
         os.makedirs(download_dir)
     
+    classes = [
+        {"name": "Intro to DSA - Why Learning DSA is Important", "videoId": "YEOuqKT-svE", "day": datetime.strptime("19/11/20", '%d/%m/%y').date()},
+        {"name": "Basic Maths + Practise Questions + Q/A", "videoId": "POehjAlYqNw", "day": datetime.strptime("25/11/20", '%d/%m/%y').date()},
+        {"name": "Introduction to Arrays and Operations", "videoId": "uFdm_kXGJkU", "day": datetime.strptime("26/11/20", '%d/%m/%y').date()}]
+    
     while True:
-        video_id = 'uxXJ7j86mIM'
+        today = date.today()
+        thereIsAClassToday = False
+        
+        for aClass in classes:
+            if aClass['day'] == today:
+                thereIsAClassToday = True
+            elif aClass['day'] < today:
+                classes.pop()
+
+        if not thereIsAClassToday:
+            logging.info("No class today. Sleeping for 1 day")
+            time.sleep(60*60*24)
             
-        video_url = "https://www.youtube.com/watch?v="+video_id
+        video_url = "https://www.youtube.com/watch?v="+classes[0]['videoId']
         
         today = time.strftime("%Y-%m-%d")
         
@@ -50,10 +67,9 @@ if __name__ == "__main__":
         logging.info("Downloading stream @ %s", video_url)
         
         # Invoke streamlink process to download the live video
-        proc = subprocess.Popen(["streamlink", "-o", os.path.join(download_dir, output_fname), video_url, quality])
+        proc = subprocess.Popen(["streamlink", "-o", os.path.join(download_dir, classes[0]["name"] + ".mp4"), video_url, quality])
         exit_code = proc.wait()
         print(exit_code)
         if exit_code != 0:
             logging.info("Video is not live %s. Will wait for 5 minutes and retry.", video_url)
             time.sleep(300)
-            
