@@ -1,3 +1,4 @@
+import subprocess
 import ConfigParser
 import logging
 import os.path
@@ -49,5 +50,5 @@ if __name__ == "__main__":
         logging.info("Downloading stream @ %s", video_url)
         
         # Invoke streamlink process to download the live video
-        proc = Popen(["streamlink", "-o", os.path.join(download_dir, output_fname), video_url, quality])
+        proc = subprocess.Popen(["streamlink", "-o", os.path.join(download_dir, output_fname), video_url, quality])
         exit_code = proc.wait()
