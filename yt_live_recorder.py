@@ -69,7 +69,6 @@ if __name__ == "__main__":
         # Invoke streamlink process to download the live video
         proc = subprocess.Popen(["streamlink", "-o", os.path.join(download_dir, classes[0]["name"] + ".mp4"), video_url, quality])
         exit_code = proc.wait()
-        print(exit_code)
         if exit_code != 0:
             logging.info("Video is not live %s. Will wait for 5 minutes and retry.", video_url)
             time.sleep(300)
