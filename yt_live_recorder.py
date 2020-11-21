@@ -46,6 +46,7 @@ if __name__ == "__main__":
         for aClass in classes:
             if aClass['day'] == today:
                 thereIsAClassToday = True
+                break
             elif aClass['day'] < today:
                 classes.pop()
 
